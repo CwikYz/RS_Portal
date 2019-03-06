@@ -1,0 +1,43 @@
+<?php  
+  echo "user id: <b>$who</b><br/>";
+ echo "username: $whonick<br/>";
+  $nopl = mysql_fetch_array(mysql_query("SELECT sex, birthday, location FROM fun_users WHERE id='".$who."'"));
+  $uage = getage($nopl[1]);
+  if($nopl[0]=='M')
+  {
+    $usex = "Musko";
+  }else if($nopl[0]=='F'){
+    $usex = "Zensko";
+  }else{
+    $usex = "Pol nije odredjen.";
+  }
+  $nopl[2] = htmlspecialchars($nopl[2]);
+  echo "age: <b>$uage</b><br/>";
+ echo "gender: <b>$usex</b><br/>";
+ echo "country: <b>$nopl[2]</b><br/>";
+echo "<a href=\"index.php?action=viewusrmore&amp;sid=$sid&amp;who=$who\">[more]</a><br/>";
+
+  echo "<a href=\"inbox.php?action=sendpm&amp;who=$who&amp;sid=$sid\">+ send message</a><br/>";
+  $uid = getuid_sid($sid);
+  if(budres($uid, $who)==0)
+  {
+    echo "<a href=\"genproc.php?action=bud&amp;who=$who&amp;sid=$sid&amp;todo=add\">+ add to buddylist</a><br/>";
+  }else if(budres($uid, $who)==1)
+  {
+    echo "buddy request pending<br/>";
+  }
+
+
+  $ires = ignoreres($uid, $who);
+  if(es==2)
+  {
+    echo "<a href=\"genproc.php?action=ign&amp;who=$who&amp;sid=$sid&amp;todo=del\">- remove from ignore list</a><br/>";
+  }else if($ires==1)
+  {
+    echo "<a href=\"genproc.php?action=ign&amp;who=$who&amp;sid=$sid&amp;todo=add\">+ add to Ignore list</a><br/>";
+  }
+  echo "<a href=\"userfun.php?action=profile&amp;who=$who&amp;sid=$sid\">+ fun &amp; games</a><br/>";
+   if(ismod(getuid_sid($sid)))
+   {
+     echo "<a href=\"modcp.php?action=user&amp;who=$who&amp;sid=$sid&amp;who=$who\">+ moderate user</a><br/>";
+   }
